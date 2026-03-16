@@ -1,0 +1,160 @@
+@import url("https://fonts.googleapis.com/css2?family=Jersey+10&display=swap");
+
+.pomodoro-page {
+  background-size: cover;
+  min-height: 100vh;
+  font-family: "Jersey 10", sans-serif;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+  padding-top: 80px;
+}
+
+.pomodoro-title {
+  font-size: 2.8rem;
+  color: #b26dff;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.pomodoro-layout {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 85%;
+  gap: 2rem;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-radius: 20px;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 20px;
+  color: white;
+}
+
+.stats {
+  flex: 1;
+  max-width: 250px;
+}
+
+.timer {
+  flex: 2;
+  text-align: center;
+  font-size: 4rem;
+  padding: 60px 20px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 20px;
+}
+
+.buttons button {
+  background: #d7b3ff;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 25px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.buttons button:hover {
+  transform: scale(1.06);
+  opacity: 0.9;
+}
+
+.right-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.todo,
+.quick-note {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.todo-input {
+  display: flex;
+  width: 90%;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.todo-input input {
+  flex: 1;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 8px;
+}
+
+.todo-input button {
+  background: #d7b3ff;
+  border: none;
+  padding: 6px 14px;
+  font-size: 1.3rem;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.todo-list {
+  width: 90%;
+  margin-top: 10px;
+}
+
+.todo-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.09);
+  border-radius: 10px;
+  margin-bottom: 8px;
+  font-size: 1.2rem;
+}
+
+.todo-item button {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.quick-note textarea {
+  width: 90%;
+  height: 110px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+  resize: none;
+  font-family: "Jersey 10", sans-serif;
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+}
+
+.quick-note textarea::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.pomodoro-page::-webkit-scrollbar {
+  width: 8px;
+}
+.pomodoro-page::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 6px;
+}

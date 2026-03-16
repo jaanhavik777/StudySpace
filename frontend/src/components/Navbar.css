@@ -1,0 +1,36 @@
+@import url("https://fonts.googleapis.com/css2?family=Jersey+10&display=swap");
+
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 22px;
+  z-index: 999;
+  font-family: "Jersey 10", sans-serif;
+}
+
+.brand {
+  font-size: 1.9rem;
+  color: #d7b3ff;
+  text-decoration: none;
+}
+
+.nav-right a {
+  color: white;
+  text-decoration: none;
+  margin-left: 18px;
+  font-size: 1.25rem;
+  transition: 0.25s;
+}
+
+.nav-right a:hover {
+  color: #d7b3ff;
+}

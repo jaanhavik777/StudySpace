@@ -1,0 +1,57 @@
+@import url("https://fonts.googleapis.com/css2?family=Jersey+10&display=swap");
+
+.home-container {
+  padding-top: 8px;
+  min-height: 100vh;
+  color: white;
+  font-family: "Jersey 10", sans-serif;
+}
+
+.home-title {
+  font-size: 3rem;
+  text-align: center;
+  color: #bf87ff;
+  margin-bottom: 25px;
+}
+.home-subtitle p {
+  color:rgb(247, 247, 247);
+  text-align: center;
+  opacity: 0.85;
+  font-size: 1.2rem;
+  margin-bottom:20px;
+
+}
+.home-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.home-card {
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: 20px;
+  border-radius: 18px;
+  text-align: center;
+  transition: 0.3s ease;
+}
+
+.home-card:hover {
+  transform: scale(1.03);
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.home-card h3 {
+  color: white;
+  font-size: 1.8rem;
+  /*margin-bottom: 8px;*/
+}
+
+.home-card p {
+  color:rgb(172, 168, 168);
+  opacity: 0.85;
+  font-size: 1.2rem;
+  text-align: center;
+
+}

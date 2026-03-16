@@ -1,0 +1,113 @@
+@import url("https://fonts.googleapis.com/css2?family=Jersey+10&display=swap");
+
+.sessions-shell {
+  padding-top: 90px;  
+  min-height: 100vh;
+  font-family: "Jersey 10", sans-serif;
+  color: white;
+}
+
+/* PAGE TITLE */
+.sessions-shell h3,
+.sessions-shell h1 {
+  text-align: center;
+  color: #b26dff;
+  margin-bottom: 24px;
+  font-size: 2.4rem;
+}
+
+/* CREATE SESSION BOX */
+.sessions-create {
+  max-width: 900px;
+  margin: 0 auto 30px auto;
+  background: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-radius: 18px;
+  padding: 22px;
+  color: #fffcfc;                       /* FIX: readable text */
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+}
+
+/* INPUTS */
+.sessions-create input,
+.sessions-create textarea {
+  width: 100%;
+  margin-bottom: 14px;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  background: rgba(255, 255, 255, 0.24);
+  color: #ffffff;                        /* FIX */
+  font-size: 1.2rem;
+  font-family: "Jersey 10", sans-serif;
+}
+
+.sessions-create textarea {
+  min-height: 80px;
+}
+
+/* CREATE BUTTON */
+.sessions-create .btn {
+  width: 100%;
+  background: #d7b3ff;
+  color: black;
+  padding: 14px;
+  font-size: 1.3rem;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.sessions-create .btn:hover {
+  transform: scale(1.03);
+}
+
+/* SESSION LIST CONTAINER */
+.sessions-list {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* EACH SESSION CARD */
+.session-card {
+  background: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-radius: 18px;
+  padding: 18px;
+  margin-bottom: 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #fffdfd;                        
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+}
+
+.session-card h4 {
+  font-size: 1.8rem;
+  margin-bottom: 6px;
+  color: #ffffff;                        
+}
+
+.session-card p {
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
+/* BUTTONS IN SESSION CARD */
+.session-card .btn {
+  background: #d7b3ff;
+  color: black;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: 0.25s;
+  display: inline-block;
+}
+.session-card .btn:hover {
+  transform: scale(1.05);
+}

@@ -1,0 +1,42 @@
+@import url("https://fonts.googleapis.com/css2?family=Jersey+10&display=swap");
+
+.user-container {
+  padding-top: 8px;
+  min-height: 100vh;
+  color: white;
+  font-family: "Jersey 10", sans-serif;
+}
+
+.user-card {
+  max-width: 600px;
+  margin: auto;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(14px);
+  padding: 25px;
+  border-radius: 18px;
+}
+
+.user-card h2 {
+  text-align: center;
+  color: #b26dff;
+  font-size: 2.4rem;
+  margin-bottom: 20px;
+}
+
+.user-card p {
+  font-size: 1.3rem;
+  opacity: 0.9;
+  margin-bottom: 10px;
+}
+
+.user-card button {
+  background: #d7b3ff;
+  color: black;
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
+  width: 100%;
+  margin-top: 20px;
+  font-size: 1.25rem;
+  cursor: pointer;
+}

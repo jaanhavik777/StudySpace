@@ -1,0 +1,68 @@
+@import url("https://fonts.googleapis.com/css2?family=Jersey+10&display=swap");
+@font-face {
+  font-family: "Jersey 10";
+  src: local("Jersey 10"), local("Jersey10");
+}
+
+:root {
+  --accent: #9a6cff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: "Jersey 10", sans-serif;
+}
+
+body {
+  background-image: url("../public/assets/space-bg.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+
+.app-shell {
+  max-width: 1100px;
+  margin: 20px auto;
+  padding: 12px;
+}
+
+body:not(.pomodoro-active) .card {
+  background: rgba(0, 0, 0, 0.45);
+  padding: 12px;
+  border-radius: 10px;
+}
+
+.section-title {
+  color: var(--accent);
+  font-family: "Jersey 10", sans-serif;
+}
+
+.btn {
+  background: var(--accent);
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: #fff;
+  cursor: pointer;
+}
+
+input,
+textarea {
+  font-family: "Jersey 10", sans-serif;
+}
+
+body,
+.app-shell {
+  padding-top: 70px !important;
+  position: relative;
+  z-index: 1;
+}

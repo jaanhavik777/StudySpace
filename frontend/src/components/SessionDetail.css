@@ -1,0 +1,30 @@
+@import url("https://fonts.googleapis.com/css2?family=Jersey+10&display=swap");
+
+.session-detail-container {
+  padding-top: 90px;
+  min-height: 100vh;
+  color: white;
+  font-family: "Jersey 10", sans-serif;
+}
+
+.session-detail-card {
+  max-width: 650px;
+  margin: auto;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(14px);
+  padding: 25px;
+  border-radius: 20px;
+}
+
+.session-detail-card h2 {
+  font-size: 2.5rem;
+  text-align: center;
+  color: #b26dff;
+  margin-bottom: 20px;
+}
+
+.session-detail-card p {
+  opacity: 0.9;
+  font-size: 1.3rem;
+  margin-bottom: 12px;
+}

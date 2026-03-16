@@ -1,0 +1,79 @@
+@import url("https://fonts.googleapis.com/css2?family=Jersey+10&display=swap");
+
+.login-shell {
+  padding-top: 90px;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  font-family: "Jersey 10", sans-serif;
+}
+
+.login-card {
+  width: 380px;
+  padding: 30px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.16);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  color: #0e0e0e;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.login-card h2 {
+  text-align: center;
+  color: #b26dff;
+  margin-bottom: 20px;
+  font-size: 2.5rem;
+}
+
+.login-card input {
+  width: 100%;
+  padding: 14px;
+  background: rgba(255,255,255,0.25);
+  border: none;
+  border-radius: 12px;
+  margin-bottom: 14px;
+  font-size: 1.3rem;
+  color: #222;
+}
+
+.login-card button {
+  width: 100%;
+  padding: 14px;
+  background: #d7b3ff;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.login-card button:hover {
+  transform: scale(1.03);
+}
+
+.err {
+  background: rgba(255,0,0,0.25);
+  padding: 8px;
+  text-align: center;
+  border-radius: 12px;
+  margin-bottom: 14px;
+  color: #222;
+  font-size: 1.2rem;
+}
+
+.toggle {
+  margin-top: 18px;
+  text-align: center;
+  font-size: 1.3rem;
+  color: #333;
+}
+
+.toggle span {
+  color: #b26dff;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.login-card input::placeholder {
+  color: #555454;
+}

@@ -1,0 +1,105 @@
+@import url("https://fonts.googleapis.com/css2?family=Jersey+10&display=swap");
+
+.chatroom-container {
+  padding-top: 90px !important;
+  min-height: 100vh;
+  font-family: "Jersey 10", sans-serif;
+  color: white;
+}
+
+/* GRID */
+.chatroom-shell {
+  display: grid !important;
+  grid-template-columns: 260px 1fr;
+  gap: 16px;
+  width: 100%;
+}
+
+/* PANELS */
+.left,
+.right {
+  background: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(18px);
+  /*-webkit-backdrop-filter: blur(18px);*/
+  border-radius: 12x;
+  padding: 12px;
+  /*box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);*/
+  color: #ffffff;          
+}
+
+/* SIDEBAR GROUPS */
+.group {
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 12px;
+  margin-bottom: 10px;
+  transition: 0.25s;
+  cursor: pointer;
+  color: #440170;         
+}
+.group:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+/* CHAT WINDOW */
+.chat-window {
+  height: calc(100vh - 260px);
+  min-height: 280px;
+  overflow-y: auto;
+  background: rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 14px;
+  padding: 12px;
+  margin-bottom: 14px;
+  box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.25);
+  color: #222;           
+}
+
+/* MESSAGES */
+.msg {
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.35);
+  border-radius: 12px;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+  color: #222;           
+}
+.msg.me {
+  background: rgba(178, 109, 255, 0.4);
+  color: black;          
+  text-align: right;
+}
+
+/* INPUT AREA */
+.input-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.input-row input {
+  flex: 1;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  background: rgba(255, 255, 255, 0.28);
+  color: #222;            
+  font-size: 1.1rem;
+}
+
+.input-row button {
+  background: #d7b3ff;
+  color: black;
+  border: none;
+  padding: 12px 22px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  font-family: "Jersey 10", sans-serif;
+  transition: 0.2s;
+}
+
+.input-row button:hover {
+  transform: scale(1.05);
+}

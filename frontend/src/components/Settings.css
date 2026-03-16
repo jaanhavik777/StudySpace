@@ -1,0 +1,76 @@
+@import url("https://fonts.googleapis.com/css2?family=Jersey+10&display=swap");
+
+.settings-container {
+  font-family: "Jersey 10", sans-serif;
+  color: white;
+  padding-top: 80px;
+  min-height: 100vh;
+  background-size: cover;
+}
+
+.settings-container .section-title {
+  font-size: 2.6rem;
+  color: #b26dff;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 18px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: 22px;
+  box-shadow: 0 4px 26px rgba(0, 0, 0, 0.35);
+  color: white;
+  margin-bottom: 25px;
+}
+
+.card h3 {
+  text-align: center;
+  margin-bottom: 12px;
+  color: #b26dff;
+  font-size: 1.7rem;
+}
+
+.card label {
+  display: block;
+  margin: 10px 0 6px;
+  font-size: 1.1rem;
+}
+
+.card input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background: rgba(255, 255, 255, 0.18);
+  color: white;
+  font-family: "Jersey 10", sans-serif;
+  font-size: 1.1rem;
+}
+
+.btn {
+  width: 100%;
+  margin-top: 15px;
+  padding: 10px;
+  background: #d7b3ff;
+  color: black;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: 0.3s ease;
+  font-family: "Jersey 10", sans-serif;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+.message {
+  text-align: center;
+  color: #b26dff;
+  font-size: 1.2rem;
+  margin-top: 10px;
+}

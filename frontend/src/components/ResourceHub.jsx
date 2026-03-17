@@ -17,7 +17,7 @@ export default function ResourceHub() {
   // Fetch all resources and saves them into resource state
   const fetchResources = async () => {
     try {
-      const res = await axios.get("http://localhost:3001/api/resources");
+      const res = await axios.get("https://studyspace-q5gn.onrender.com/api/resources");
       setResources(res.data);
     } catch (err) {
       console.error("Fetch failed", err);
@@ -34,7 +34,7 @@ export default function ResourceHub() {
     try {
       const token = localStorage.getItem("token");
 
-      await axios.post("http://localhost:3001/api/resources", form, {
+      await axios.post("https://studyspace-q5gn.onrender.com/api/resources", form, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -57,7 +57,7 @@ export default function ResourceHub() {
     try {
       const token = localStorage.getItem("token");
 
-      await axios.delete(`http://localhost:3001/api/resources/${id}`, {
+      await axios.delete(`https://studyspace-q5gn.onrender.com/api/resources/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 

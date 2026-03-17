@@ -13,7 +13,7 @@ export default function Login() {
     if (!email || !password) return setMsg("Please fill all fields");
 
     try {
-      const res = await axios.post("http://localhost:3001/api/auth/login", {
+      const res = await axios.post("https://studyspace-q5gn.onrender.com/api/auth/login", {
         email,
         password,
       });
@@ -31,7 +31,7 @@ export default function Login() {
     if (!name || !email || !password) return setMsg("Please fill all fields");
 
     try {
-      const res = await axios.post("http://localhost:3001/api/auth/register", {
+      const res = await axios.post("https://studyspace-q5gn.onrender.com/api/auth/register", {
         name,
         email,
         password,

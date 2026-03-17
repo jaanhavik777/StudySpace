@@ -3,7 +3,7 @@ import axios from "axios";
 import { createSocket } from "../socket";
 import "./Chatroom.css";
 
-const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:3001";
+const API_BASE = process.env.REACT_APP_API_BASE || "https://studyspace-q5gn.onrender.com/";
 
 function dmRoom(a, b) {
   const [x, y] = [a.toString(), b.toString()].sort();

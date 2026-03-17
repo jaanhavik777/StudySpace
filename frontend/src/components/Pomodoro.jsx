@@ -33,14 +33,14 @@ export default function Pomodoro() {
   }, []);
 
   useEffect(() => {
-    axios.get("http://localhost:3001/api/settings").then((res) => {               ///fetch the initial settings from backend
+    axios.get("https://studyspace-q5gn.onrender.com/api/settings").then((res) => {               ///fetch the initial settings from backend
       if (res.data && res.data.focusTime) setSettings(res.data);
     });
   }, []);
 
 const location = useLocation();                                                       // Re-fetch settings when url changes
 useEffect(() => {
-  axios.get("http://localhost:3001/api/settings").then((res) => {
+  axios.get("https://studyspace-q5gn.onrender.com/api/settings").then((res) => {
     if (res.data && res.data.focusTime) setSettings(res.data);
   });
 }, [location.pathname]);
@@ -53,7 +53,7 @@ useEffect(() => {
 
 
   useEffect(() => {
-    axios.get("http://localhost:3001/api/pomodoro/guest").then((res) => {                           //loads user & pomodoro stats from the backend
+    axios.get("https://studyspace-q5gn.onrender.com/api/pomodoro/guest").then((res) => {                           //loads user & pomodoro stats from the backend
       if (res.data && !res.data.message) {
         // ensure defaults
         setStats({
@@ -79,7 +79,7 @@ useEffect(() => {
       payload.totalStudyTime = Number(payload.totalStudyTime || 0);
       payload.tasksDone = Number(payload.tasksDone || 0);
 
-      await axios.post("http://localhost:3001/api/pomodoro/update", payload);
+      await axios.post("https://studyspace-q5gn.onrender.com/api/pomodoro/update", payload);
     } catch (e) {
       console.error("Failed to persist pomodoro stats:", e);
     }
@@ -141,7 +141,7 @@ useEffect(() => {
     };
     setStats(updatedStats);
     setElapsed(0);
-    await axios.post("http://localhost:3001/api/pomodoro/update", {
+    await axios.post("https://studyspace-q5gn.onrender.com/api/pomodoro/update", {
       user: "guest",
       ...updatedStats,
     });
@@ -188,7 +188,7 @@ const deleteTodo = async (index) => {                                           
 
   setStats(updatedStats);
 
-  await axios.post("http://localhost:3001/api/pomodoro/update", {                         //update stats
+  await axios.post("https://studyspace-q5gn.onrender.com/api/pomodoro/update", {                         //update stats
     user: "guest",
     ...updatedStats,
   });

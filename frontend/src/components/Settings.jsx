@@ -16,7 +16,7 @@ export default function Settings() {
     const saved = JSON.parse(localStorage.getItem("user"));
     if (saved) setUser(saved);
 
-    axios.get("http://localhost:3001/api/settings").then((res) => {
+    axios.get("https://studyspace-q5gn.onrender.com/api/settings").then((res) => {
       if (res.data && res.data.focusTime) {
         setFocusTime(res.data.focusTime);
         setShortBreak(res.data.shortBreak);
@@ -28,7 +28,7 @@ export default function Settings() {
 
   const savePomodoro = async () => {                                  //save the settings to server
     try {
-      await axios.post("http://localhost:3001/api/settings", {
+      await axios.post("https://studyspace-q5gn.onrender.com/api/settings", {
         focusTime,
         shortBreak,
         longBreak,
@@ -43,7 +43,7 @@ export default function Settings() {
 
   const updateUser = async () => {                                        //updates user profile
     try {
-      const res = await axios.put("http://localhost:3001/api/user/update", user);
+      const res = await axios.put("https://studyspace-q5gn.onrender.com/api/user/update", user);
       localStorage.setItem("user", JSON.stringify(res.data.user));
       setEditing(false);
       setMessage("User updated!");

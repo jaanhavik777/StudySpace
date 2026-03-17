@@ -3,8 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import "./SessionDetail.css";
 
-const API = process.env.REACT_APP_API || "http://localhost:3001";
-
+const API = process.env.REACT_APP_API || "https://studyspace-q5gn.onrender.com/"
 export default function SessionDetail() {
   const { id } = useParams();
   const [session, setSession] = useState(null);

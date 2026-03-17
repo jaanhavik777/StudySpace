@@ -4,7 +4,7 @@ import PrivateChat from "./PrivateChat";
 import { createSocket } from "../socket";
 import "./Chatroom.css";
 
-const API_BASE = "https://studyspace-q5gn.onrender.com/";
+const API_BASE = "https://studyspace-q5gn.onrender.com";
 
 export default function Chatroom() {
   const [groups, setGroups] = useState([]);

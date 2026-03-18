@@ -27,6 +27,7 @@ app.get("/", (req, res) => {
   res.send("StudySpace backend running");
 });
 
+// static uploads
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // make socket available in routes
@@ -60,7 +61,7 @@ io.use((socket, next) => {
 io.on('connection', (socket) => {
   console.log("Socket connected:", socket.id);
 
-  // ✅ auto join personal room
+  // auto join personal room
   if (socket.user?.id) {
     socket.join(`user:${socket.user.id}`);
   }
@@ -91,7 +92,7 @@ io.on('connection', (socket) => {
 });
 
 // SERVER
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000; // FINAL BACKEND PORT
 const MONGO = process.env.MONGO_URI;
 
 mongoose.connect(MONGO, {

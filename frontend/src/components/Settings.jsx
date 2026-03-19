@@ -44,7 +44,11 @@ export default function Settings() {
   const updateUser = async () => {                                        //updates user profile
     try {
       const res = await axios.put("https://studyspace-q5gn.onrender.com/api/user/update", user);
-      localStorage.setItem("user", JSON.stringify(res.data.user));
+      // FIX: preserve the existing _id when writing back to localStorage.
+      // The update endpoint may return { name, email } without _id, which
+      // would silently wipe the ID and break DMs until the user re-logs in.
+      const existing = JSON.parse(localStorage.getItem("user") || "{}");
+      localStorage.setItem("user", JSON.stringify({ ...existing, ...res.data.user }));
       setEditing(false);
       setMessage("User updated!");
       setTimeout(() => setMessage(""), 2000);

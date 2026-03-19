@@ -1,226 +1,173 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { createSocket } from "../socket";
+import { getMyId } from "../utils/getmyid";
 import "./Chatroom.css";
 
 const API_BASE =
   process.env.REACT_APP_API_BASE ||
   "https://studyspace-q5gn.onrender.com";
 
-// STRICT room function (ONLY _id)
 function dmRoom(a, b) {
-  const [x, y] = [a.toString(), b.toString()].sort();
+  if (!a || !b) return null;
+  const [x, y] = [String(a), String(b)].sort();
   return `dm:${x}:${y}`;
 }
 
-export default function PrivateChat({ otherUser, onClose }) {
+// socket is passed in from Chatroom — already connected, never created/destroyed here.
+export default function PrivateChat({ otherUser, socket, onClose }) {
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState("");
   const [typing, setTyping] = useState(false);
-  const [showEmojiMenu, setShowEmojiMenu] = useState(false);
+  const [fetchError, setFetchError] = useState(false);
 
-  const socketRef = useRef(null);
   const typingTimeout = useRef(null);
+  const endRef = useRef(null);
 
-  const me = JSON.parse(localStorage.getItem("user") || "{}");
   const token = localStorage.getItem("token");
-
-  const EMOJIS = ["👍", "❤️", "😂", "🎉", "🔥", "😮", "😢", "🙏"];
+  // THE ROOT FIX: localStorage user has no _id/id — decode it from the JWT instead.
+  const myId = getMyId();
 
   useEffect(() => {
-    if (!me?._id || !otherUser?._id) return;
+    setMessages([]);
+    setFetchError(false);
 
-    const s = createSocket(token);
-    socketRef.current = s;
+    if (!myId || !otherUser?._id || !token || !socket) return;
 
-    const room = dmRoom(me._id, otherUser._id);
+    const otherId = String(otherUser._id);
+    const room = dmRoom(myId, otherId);
+    if (!room) return;
 
-    // DEBUG
-    s.on("connect", () => {
-      console.log("✅ SOCKET CONNECTED:", s.id);
-    });
+    socket.emit("joinRoom", { roomId: room });
 
-    s.on("connect_error", (err) => {
-      console.error("❌ SOCKET ERROR:", err);
-    });
+    // AbortController cancels stale history fetch if user switches chats
+    const abort = new AbortController();
 
-    s.connect();
-
-    // join room
-    s.emit("joinRoom", { roomId: room });
-
-    // load history
     axios
-      .get(`${API_BASE}/api/messages/dm/${otherUser._id}`, {
+      .get(`${API_BASE}/api/messages/dm/${otherId}`, {
         headers: { Authorization: `Bearer ${token}` },
+        signal: abort.signal,
       })
-      .then((res) => setMessages(res.data || []))
-      .catch(() => setMessages([]));
+      .then((res) => {
+        const filtered = (res.data || []).filter((m) => m.room === room);
+        setMessages(filtered);
+      })
+      .catch((err) => {
+        if (axios.isCancel(err) || err.name === "CanceledError") return;
+        console.error("DM history fetch failed:", err);
+        setFetchError(true);
+      });
 
-    // listeners
-    s.on("message", (m) => {
-      if (m.room === room) {
-        setMessages((prev) => [...prev, m]);
-      }
-    });
+    // Named handlers so socket.off() only removes these, not Chatroom's listeners
+    const onMessage = (m) => {
+      if (m.room !== room) return;
+      setMessages((prev) => {
+        if (prev.some((x) => x._id === m._id)) return prev;
+        return [...prev, m];
+      });
+    };
+    const onEdited   = (m) => { if (m.room === room) setMessages((prev) => prev.map((x) => (x._id === m._id ? m : x))); };
+    const onReacted  = (m) => { if (m.room === room) setMessages((prev) => prev.map((x) => (x._id === m._id ? m : x))); };
+    const onTyping   = ({ user, isTyping, roomId }) => { if (roomId === room && user !== myId) setTyping(isTyping); };
 
-    s.on("messageEdited", (m) => {
-      if (m.room === room) {
-        setMessages((prev) =>
-          prev.map((x) => (x._id === m._id ? m : x))
-        );
-      }
-    });
-
-    s.on("messageReacted", (m) => {
-      if (m.room === room) {
-        setMessages((prev) =>
-          prev.map((x) => (x._id === m._id ? m : x))
-        );
-      }
-    });
-
-    s.on("typing", ({ user, isTyping, roomId }) => {
-      if (roomId === room && user !== me._id) {
-        setTyping(isTyping);
-      }
-    });
+    socket.on("message",       onMessage);
+    socket.on("messageEdited", onEdited);
+    socket.on("messageReacted",onReacted);
+    socket.on("typing",        onTyping);
 
     return () => {
-      try {
-        s.emit("leaveRoom", { roomId: room });
-      } catch {}
-      try {
-        s.disconnect();
-      } catch {}
+      abort.abort();
+      socket.emit("leaveRoom", { roomId: room });
+      socket.off("message",       onMessage);
+      socket.off("messageEdited", onEdited);
+      socket.off("messageReacted",onReacted);
+      socket.off("typing",        onTyping);
     };
-  }, [otherUser._id]);
+  }, [otherUser?._id, myId, token, socket]);
 
-  // typing indicator
+  useEffect(() => {
+    endRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
   const sendTyping = (isTyping) => {
-    const s = socketRef.current;
-    if (!s || !s.connected) return;
-
-    const room = dmRoom(me._id, otherUser._id);
-
-    s.emit("typing", {
-      roomId: room,
-      user: me._id,
-      isTyping,
-    });
+    if (!socket?.connected) return;
+    const room = dmRoom(myId, String(otherUser._id));
+    if (!room) return;
+    socket.emit("typing", { roomId: room, user: myId, isTyping });
   };
 
   const onTextChange = (e) => {
     setText(e.target.value);
     sendTyping(true);
-
     if (typingTimeout.current) clearTimeout(typingTimeout.current);
-
-    typingTimeout.current = setTimeout(() => {
-      sendTyping(false);
-      typingTimeout.current = null;
-    }, 900);
+    typingTimeout.current = setTimeout(() => { sendTyping(false); typingTimeout.current = null; }, 900);
   };
 
-  // SEND MESSAGE
   const send = async (maybeEmoji) => {
-    const bodyText = maybeEmoji ? maybeEmoji : text;
-    if (!bodyText || !bodyText.trim()) return;
-
+    const bodyText = maybeEmoji ?? text;
+    if (!bodyText?.trim()) return;
     try {
       const res = await axios.post(
         `${API_BASE}/api/messages/dm/${otherUser._id}`,
         { text: bodyText },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-
-      // ✅ fallback UI update (IMPORTANT)
-      setMessages((prev) => [...prev, res.data]);
-
+      setMessages((prev) => {
+        if (prev.some((x) => x._id === res.data._id)) return prev;
+        return [...prev, res.data];
+      });
       setText("");
       sendTyping(false);
-    } catch (e) {
-      console.error("SEND ERROR:", e);
-    }
+    } catch (e) { console.error("SEND ERROR:", e); }
   };
 
   const editMessage = async (msgId, newText) => {
     try {
-      await axios.put(
-        `${API_BASE}/api/messages/edit/${msgId}`,
-        { text: newText },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-    } catch (e) {
-      console.error(e);
-    }
+      await axios.put(`${API_BASE}/api/messages/edit/${msgId}`, { text: newText }, { headers: { Authorization: `Bearer ${token}` } });
+    } catch (e) { console.error(e); }
   };
 
   const reactToMessage = async (msgId, emoji) => {
     try {
-      await axios.post(
-        `${API_BASE}/api/messages/react/${msgId}`,
-        { emoji },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-    } catch (e) {
-      console.error(e);
-    }
+      await axios.post(`${API_BASE}/api/messages/react/${msgId}`, { emoji }, { headers: { Authorization: `Bearer ${token}` } });
+    } catch (e) { console.error(e); }
   };
 
   return (
     <div className="app-shell chatroom-container" style={{ maxWidth: 900 }}>
       <div className="chatroom-shell" style={{ gridTemplateColumns: "1fr" }}>
         <div className="right">
-          <h3>
-            Chat with {otherUser.name || otherUser.email}
-          </h3>
+          <h3>Chat with {otherUser.name || otherUser.email}</h3>
+
+          {fetchError && (
+            <div style={{ color: "red", marginBottom: 8, fontSize: 13 }}>
+              Could not load message history. Check your connection or try refreshing.
+            </div>
+          )}
 
           <div className="chat-window">
-            {messages.map((m) => (
-              <div
-                key={m._id || m.createdAt}
-                className={`msg ${
-                  m.from &&
-                  m.from._id === me._id
-                    ? "me"
-                    : ""
-                }`}
-              >
-                <div style={{ fontSize: 12, opacity: 0.8 }}>
-                  {m.from?.name} {m.edited ? "(edited)" : ""}
+            {messages.map((m) => {
+              const isMe = String(m.from?._id) === myId;
+              return (
+                <div key={m._id || m.createdAt} className={`msg ${isMe ? "me" : ""}`}>
+                  <div style={{ fontSize: 12, opacity: 0.8 }}>
+                    {m.from?.name} {m.edited ? "(edited)" : ""}
+                  </div>
+                  <div>{m.text}</div>
+                  <div style={{ fontSize: 12, opacity: 0.7 }}>
+                    {m.reactions?.map((r, i) => (
+                      <span key={i} style={{ marginRight: 6 }}>{r.emoji}</span>
+                    ))}
+                    <button onClick={() => reactToMessage(m._id, "👍")}>👍</button>
+                    {isMe && (
+                      <button onClick={() => { const t = prompt("Edit message", m.text); if (t !== null) editMessage(m._id, t); }}>
+                        Edit
+                      </button>
+                    )}
+                  </div>
                 </div>
-
-                <div>{m.text}</div>
-
-                <div style={{ fontSize: 12, opacity: 0.7 }}>
-                  {m.reactions?.map((r, i) => (
-                    <span key={i} style={{ marginRight: 6 }}>
-                      {r.emoji}
-                    </span>
-                  ))}
-
-                  <button onClick={() => reactToMessage(m._id, "👍")}>
-                    👍
-                  </button>
-
-                  {m.from?._id === me._id && (
-                    <button
-                      onClick={() => {
-                        const newText = prompt(
-                          "Edit message",
-                          m.text
-                        );
-                        if (newText !== null)
-                          editMessage(m._id, newText);
-                      }}
-                    >
-                      Edit
-                    </button>
-                  )}
-                </div>
-              </div>
-            ))}
+              );
+            })}
+            <div ref={endRef} />
           </div>
 
           <div style={{ minHeight: 20, marginTop: 6 }}>
@@ -229,16 +176,14 @@ export default function PrivateChat({ otherUser, onClose }) {
 
           <div className="input-row">
             <input
+              id="dm-input"
+              name="dm-input"
               value={text}
               onChange={onTextChange}
               placeholder="Type a message..."
             />
-
-            <button onClick={() => send()}>Send</button>
-
-            <button onClick={onClose} style={{ marginLeft: 8 }}>
-              Close
-            </button>
+            <button disabled={!text.trim()} onClick={() => send()}>Send</button>
+            <button onClick={onClose} style={{ marginLeft: 8 }}>Close</button>
           </div>
         </div>
       </div>

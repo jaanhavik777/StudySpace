@@ -67,7 +67,25 @@ io.on('connection', (socket) => {
   }
 
   socket.on('joinRoom', ({ roomId }) => {
-    if (roomId) socket.join(roomId);
+    if (!roomId) return;
+    
+    // Validate DM room access - only users in the DM can join
+    if (roomId.startsWith('dm:')) {
+      const parts = roomId.split(':');
+      if (parts.length === 3) {
+        const userId1 = parts[1];
+        const userId2 = parts[2];
+        const currentUserId = String(socket.user.id);
+        
+        // Only allow join if user is one of the two parties
+        if (currentUserId !== userId1 && currentUserId !== userId2) {
+          console.warn(`Unauthorized attempt to join room ${roomId} by user ${currentUserId}`);
+          return;
+        }
+      }
+    }
+    
+    socket.join(roomId);
   });
 
   socket.on('leaveRoom', ({ roomId }) => {

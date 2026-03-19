@@ -11,6 +11,11 @@ function dmRoom(a, b) {
   return `dm:${x}:${y}`;
 }
 
+// ✅ Verify if user can access a DM room
+function canAccessDMRoom(userId, otherId) {
+  return String(userId) === String(otherId) || userId === otherId;
+}
+
 // helper to populate message cleanly
 async function populateMessage(msgId) {
   return await Message.findById(msgId).populate("from", "name email");
@@ -33,13 +38,17 @@ router.get("/dm/:otherId", auth, async (req, res) => {
   }
 
   try {
-    const msgs = await Message.find({ room })
+    const msgs = await Message.find({ 
+      room,
+      type: "dm"
+    })
       .sort({ createdAt: 1 })
-      .populate("from", "name email");
+      .populate("from", "name email _id");
 
+    console.log(`Fetched ${msgs.length} messages for room ${room}`);
     res.json(msgs);
   } catch (e) {
-    console.error(e);
+    console.error("Error fetching DM history:", e);
     res.status(500).json({ message: "err" });
   }
 });
@@ -77,8 +86,11 @@ router.post("/dm/:otherId", auth, async (req, res) => {
 
     const full = await populateMessage(message._id);
 
+    console.log(`Message saved to room ${room}:`, full._id);
+
     const io = req.app.get("io");
     if (io) {
+      // Only emit to the specific DM room (both users must be in it)
       io.to(room).emit("message", full);
     }
 

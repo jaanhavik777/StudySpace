@@ -93,15 +93,63 @@ io.on('connection', (socket) => {
   });
 
   socket.on("typing", ({ roomId, user, isTyping }) => {
-    if (roomId) socket.to(roomId).emit("typing", { user, isTyping, roomId });
+    if (!roomId) return;
+    
+    // Validate user can send typing in this room
+    if (roomId.startsWith('dm:')) {
+      const parts = roomId.split(':');
+      if (parts.length === 3) {
+        const userId1 = parts[1];
+        const userId2 = parts[2];
+        const currentUserId = String(socket.user.id);
+        if (currentUserId !== userId1 && currentUserId !== userId2) {
+          console.warn(`Unauthorized typing in room ${roomId}`);
+          return;
+        }
+      }
+    }
+    
+    socket.to(roomId).emit("typing", { user, isTyping, roomId });
   });
 
   socket.on("editMessage", (msg) => {
-    if (msg.room) io.to(msg.room).emit("messageEdited", msg);
+    if (!msg.room) return;
+    
+    // Validate user can edit in this room
+    if (msg.room.startsWith('dm:')) {
+      const parts = msg.room.split(':');
+      if (parts.length === 3) {
+        const userId1 = parts[1];
+        const userId2 = parts[2];
+        const currentUserId = String(socket.user.id);
+        if (currentUserId !== userId1 && currentUserId !== userId2) {
+          console.warn(`Unauthorized edit in room ${msg.room}`);
+          return;
+        }
+      }
+    }
+    
+    io.to(msg.room).emit("messageEdited", msg);
   });
 
   socket.on("reactMessage", (msg) => {
-    if (msg.room) io.to(msg.room).emit("messageReacted", msg);
+    if (!msg.room) return;
+    
+    // Validate user can react in this room
+    if (msg.room.startsWith('dm:')) {
+      const parts = msg.room.split(':');
+      if (parts.length === 3) {
+        const userId1 = parts[1];
+        const userId2 = parts[2];
+        const currentUserId = String(socket.user.id);
+        if (currentUserId !== userId1 && currentUserId !== userId2) {
+          console.warn(`Unauthorized reaction in room ${msg.room}`);
+          return;
+        }
+      }
+    }
+    
+    io.to(msg.room).emit("messageReacted", msg);
   });
 
   socket.on('disconnect', () => {
